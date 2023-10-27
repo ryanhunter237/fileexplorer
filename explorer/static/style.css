@@ -7,3 +7,30 @@
 table tr td:nth-child(2) {
     text-align: right;
 }
+
+.table-container {
+    max-height: 400px; /* Set the maximum height for the table container */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 1px solid #ccc;
+}
+
+table {
+    background-color: #fff;
+    position: relative; /* Necessary for fixed headers */
+}
+
+th {
+    position: sticky; /* Sticky headers */
+    top: 0;
+    background-color: #f7f7f7; /* Header background color */
+    z-index: 2; /* Place header above table cells */
+}
+
+td {
+    padding: 8px; /* Add padding for table cells */
+    vertical-align: middle;
+}
+
+.img-preview {
+    cursor: pointer; /* Add pointer cursor to image thumbnails */
+}

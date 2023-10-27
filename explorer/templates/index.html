@@ -21,38 +21,40 @@
                         {% endfor %}
                     </ol>
                 </nav>
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Size</th>
-                            <th>Thumbnail</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in data %}
-                        <tr data-filename="{{ item[0] }}">
-                            <td>
-                                {% if item[1] == 'Folder' %}
-                                <a href="{{ url_for('explorer.change_directory', current_directory=current_directory, new_path=item[0]) }}">
-                                    <img src="{{ url_for('static', filename='folder.png') }}" class="icon" alt="Folder Icon">
+                <div class="table-container">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Size</th>
+                                <th>Thumbnail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in data %}
+                            <tr data-filename="{{ item[0] }}">
+                                <td>
+                                    {% if item[1] == 'Folder' %}
+                                    <a href="{{ url_for('explorer.change_directory', current_directory=current_directory, new_path=item[0]) }}">
+                                        <img src="{{ url_for('static', filename='folder.png') }}" class="icon" alt="Folder Icon">
+                                        {{ item[0] }}
+                                    </a>
+                                    {% else %}
+                                    <img src="{{ url_for('static', filename='file.png') }}" class="icon" alt="File Icon">
                                     {{ item[0] }}
-                                </a>
-                                {% else %}
-                                <img src="{{ url_for('static', filename='file.png') }}" class="icon" alt="File Icon">
-                                {{ item[0] }}
-                                {% endif %}
-                            </td>
-                            <td>{{ item[2] }}</td>
-                            <td>
-                                {% if item[3] %}
-                                <img src="{{ url_for('explorer.serve_thumbnail', filename=item[3]) }}" alt="Thumbnail" class="img-thumbnail img-preview">
-                                {% endif %}
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                                    {% endif %}
+                                </td>
+                                <td>{{ item[2] }}</td>
+                                <td>
+                                    {% if item[3] %}
+                                    <img src="{{ url_for('explorer.serve_thumbnail', filename=item[3]) }}" alt="Thumbnail" class="img-thumbnail img-preview">
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="col-md-5">
                 <div id="image-panel" class="d-none">
@@ -66,16 +68,13 @@
         const imgPreview = document.querySelectorAll('.img-preview');
         const imagePanel = document.getElementById('image-panel');
         const selectedImage = document.getElementById('selected-image');
-        let currentDirectory = "{{ current_directory | replace("\\", "/") }}"; // Replace backslashes with forward slashes
+        let currentDirectory = "{{ current_directory | replace('\\', '/') }}"; // Replace backslashes with forward slashes
 
         imgPreview.forEach(img => {
             img.addEventListener('click', function () {
                 const filename = this.parentElement.parentElement.getAttribute('data-filename');
-                console.log(`currentDirectory = ${currentDirectory}`)
-                console.log(`filename = ${filename}`)
                 const fullImagePath = currentDirectory + '/' + filename;
                 selectedImage.src = `{{ url_for('explorer.serve_image', file_path='', _external=True) }}/${fullImagePath}`;
-                console.log(selectedImage.src)
                 imagePanel.classList.remove('d-none');
             });
         });
