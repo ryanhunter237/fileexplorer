@@ -1,0 +1,9 @@
+.icon {
+    width: 20px; /* Adjust the width and height as needed */
+    height: 20px;
+    margin-right: 5px;
+}
+
+table tr td:nth-child(2) {
+    text-align: right;
+}
