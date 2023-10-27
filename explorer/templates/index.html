@@ -8,51 +8,77 @@
 </head>
 <body>
     <div class="container mt-3">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                {% for crumb in structure %}
-                    <li class="breadcrumb-item">
-                        <a href="{{ url_for('explorer.index', path=crumb[1]) }}">
-                            {% if loop.first %}{{ crumb[1] }}{% else %}{{ crumb[0] }}{% endif %}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ol>
-        </nav>
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Size</th>
-                    <th>Thumbnail</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in data %}
-                <tr>
-                    {% if item[1] == 'Folder' %}
-                    <td>
-                        <a href="{{ url_for('explorer.change_directory', current_directory=current_directory, new_path=item[0]) }}">
-                            <img src="{{ url_for('static', filename='folder.png') }}" class="icon" alt="Folder Icon">
-                            {{ item[0] }}
-                        </a>
-                    </td>
-                    {% else %}
-                    <td>
-                        <img src="{{ url_for('static', filename='file.png') }}" class="icon" alt="File Icon">
-                        {{ item[0] }}
-                    </td>
-                    {% endif %}
-                    <td>{{ item[2] }}</td>
-                    <td>
-                        {% if item[3] %}
-                        <img src="{{ url_for('explorer.thumbnail', filename=item[3]) }}" alt="Thumbnail">
-                        {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="row">
+            <div class="col-md-7">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        {% for crumb in structure %}
+                            <li class="breadcrumb-item">
+                                <a href="{{ url_for('explorer.index', path=crumb[1]) }}">
+                                    {% if loop.first %}{{ crumb[1] }}{% else %}{{ crumb[0] }}{% endif %}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ol>
+                </nav>
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Size</th>
+                            <th>Thumbnail</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data %}
+                        <tr data-filename="{{ item[0] }}">
+                            <td>
+                                {% if item[1] == 'Folder' %}
+                                <a href="{{ url_for('explorer.change_directory', current_directory=current_directory, new_path=item[0]) }}">
+                                    <img src="{{ url_for('static', filename='folder.png') }}" class="icon" alt="Folder Icon">
+                                    {{ item[0] }}
+                                </a>
+                                {% else %}
+                                <img src="{{ url_for('static', filename='file.png') }}" class="icon" alt="File Icon">
+                                {{ item[0] }}
+                                {% endif %}
+                            </td>
+                            <td>{{ item[2] }}</td>
+                            <td>
+                                {% if item[3] %}
+                                <img src="{{ url_for('explorer.serve_thumbnail', filename=item[3]) }}" alt="Thumbnail" class="img-thumbnail img-preview">
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-5">
+                <div id="image-panel" class="d-none">
+                    <img id="selected-image" src="" alt="Selected Image" class="img-fluid">
+                </div>
+            </div>
+        </div>
     </div>
+
+    <script>
+        const imgPreview = document.querySelectorAll('.img-preview');
+        const imagePanel = document.getElementById('image-panel');
+        const selectedImage = document.getElementById('selected-image');
+        let currentDirectory = "{{ current_directory | replace("\\", "/") }}"; // Replace backslashes with forward slashes
+
+        imgPreview.forEach(img => {
+            img.addEventListener('click', function () {
+                const filename = this.parentElement.parentElement.getAttribute('data-filename');
+                console.log(`currentDirectory = ${currentDirectory}`)
+                console.log(`filename = ${filename}`)
+                const fullImagePath = currentDirectory + '/' + filename;
+                selectedImage.src = `{{ url_for('explorer.serve_image', file_path='', _external=True) }}/${fullImagePath}`;
+                console.log(selectedImage.src)
+                imagePanel.classList.remove('d-none');
+            });
+        });
+    </script>
 </body>
 </html>

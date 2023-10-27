@@ -2,7 +2,14 @@ import hashlib
 import os
 
 from flask import (
-    Blueprint, current_app, render_template, request, redirect, url_for, send_from_directory
+    Blueprint,
+    current_app,
+    redirect, 
+    render_template,
+    request,
+    send_file,
+    send_from_directory,
+    url_for
 )
 from PIL import Image
 
@@ -89,6 +96,10 @@ def change_directory():
     return redirect(url_for('explorer.index', path=path))
 
 @bp.route('/thumbnail')
-def thumbnail():
+def serve_thumbnail():
     filename = request.args.get('filename')
     return send_from_directory(current_app.instance_path, filename)
+
+@bp.route('/image/<path:file_path>')
+def serve_image(file_path):
+    return send_file(file_path)
