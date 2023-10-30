@@ -10,6 +10,10 @@ def create_app():
         ROOTDIR='c:/users/ryanh/Documents/cad/data',
     )
     app.register_blueprint(bp)    
+    app.jinja_env.filters['endswith'] = ends_with_filter
     if not os.path.exists(app.instance_path):
         os.makedirs(app.instance_path)
     return app
+
+def ends_with_filter(s: str, suffix: str):
+    return s.endswith(suffix)

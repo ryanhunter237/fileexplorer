@@ -1,6 +1,7 @@
 import hashlib
 import os
 
+import fitz
 from flask import (
     Blueprint,
     current_app,
@@ -29,6 +30,8 @@ def get_file_data(current_directory):
             file_size = convert_size(os.path.getsize(file_path))
             if file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
                 thumbnail_path = get_image_thumbnail(file_path)
+            if file.lower().endswith('.pdf'):
+                thumbnail_path = get_pdf_thumbnail(file_path)
         data.append((file, file_type, file_size, thumbnail_path))
     return data
 
@@ -73,6 +76,24 @@ def file_md5(file_path):
         data = f.read()    
     return hashlib.md5(data).hexdigest()
 
+def get_pdf_thumbnail(pdf_path):
+    md5 = file_md5(pdf_path)
+    thumbnail_filename = f'{md5}.png'
+    thumbnail_path = os.path.join(current_app.instance_path, thumbnail_filename)
+    if os.path.exists(thumbnail_path):
+        return thumbnail_filename
+    try:
+        pdf_document = fitz.open(pdf_path)
+        first_page = pdf_document.load_page(0)
+        pix = first_page.get_pixmap()
+        image = Image.frombytes('RGB', [pix.width, pix.height], pix.samples)
+        image.thumbnail(THUMBNAIL_SIZE) 
+        image.save(thumbnail_path)
+        return thumbnail_filename
+    except Exception as e:
+        print(e)
+        return None
+
 @bp.route('/')
 def index():
     rootdir = current_app.config['ROOTDIR']
@@ -100,4 +121,8 @@ def serve_thumbnail():
 
 @bp.route('/image/<path:file_path>')
 def serve_image(file_path):
+    return send_file(file_path)
+
+@bp.route('/pdf/<path:file_path>')
+def serve_pdf(file_path):
     return send_file(file_path)
