@@ -1,0 +1,16 @@
+<!-- structure is a list of tuples of the form
+(part, full-path) where part is the name of a directory/file
+and full-path is the full path of that directory/file.
+The first tuple is always ("", root-dir-path)
+-->
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        {% for crumb in structure %}
+            <li class="breadcrumb-item">
+                <a href="{{ url_for('explorer.index', path=crumb[1]) }}">
+                    {% if loop.first %}{{ crumb[1] }}{% else %}{{ crumb[0] }}{% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ol>
+</nav>

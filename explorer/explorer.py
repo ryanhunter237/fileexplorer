@@ -79,8 +79,6 @@ def index():
     current_directory = request.args.get('path', rootdir)
     data = get_file_data(current_directory)
     structure = get_directory_structure(current_directory)
-    for s in structure:
-        print(s)
     return render_template(
         'index.html',
         current_directory=current_directory,

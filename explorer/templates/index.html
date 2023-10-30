@@ -11,18 +11,10 @@
     <div id="data" data-image-url="{{ url_for('explorer.serve_image', file_path='', _external=True) }}" data-current-directory="{{ current_directory | replace('\\', '/') }}"></div>
     <div class="container mt-3">
         <div class="row">
+            {% include 'breadcrumb.html' %}
+        </div>
+        <div class="row">
             <div class="col-md-7">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        {% for crumb in structure %}
-                            <li class="breadcrumb-item">
-                                <a href="{{ url_for('explorer.index', path=crumb[1]) }}">
-                                    {% if loop.first %}{{ crumb[1] }}{% else %}{{ crumb[0] }}{% endif %}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ol>
-                </nav>
                 <div class="table-container">
                     <table class="table table-bordered table-striped">
                         <thead>
