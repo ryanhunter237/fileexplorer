@@ -14,7 +14,7 @@
             {% include 'breadcrumb.html' %}
         </div>
         <div class="row">
-            <div class="col-md-7">
+            <div class="col-md-6">
                 <div class="table-container">
                     <table class="table table-bordered table-striped">
                         <thead>
@@ -26,9 +26,9 @@
                         </thead>
                         <tbody>
                             {% for item in data %}
-                            <tr data-filename="{{ item[0] }}">
+                            <tr data-filename="{{ item[0] }}" data-filetype="{{ item[1] }}">
                                 <td>
-                                    {% if item[1] == 'Folder' %}
+                                    {% if item[1] == 'directory' %}
                                     <a href="{{ url_for('explorer.change_directory', current_directory=current_directory, new_path=item[0]) }}">
                                         <img src="{{ url_for('static', filename='folder.png') }}" class="icon" alt="Folder Icon">
                                         {{ item[0] }}
@@ -50,9 +50,9 @@
                     </table>
                 </div>
             </div>
-            <div class="col-md-5">
-                <div id="image-panel" class="d-none">
-                    <img id="selected-image" src="" alt="Selected Image" class="img-fluid">
+            <div class="col-md-6">
+                <div id="vis-panel" class="d-none">
+                    <img id="vis-display" src="" class="img-fluid">
                 </div>
             </div>
         </div>

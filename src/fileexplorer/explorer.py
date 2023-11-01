@@ -19,11 +19,21 @@ def get_file_data(current_directory: str|Path):
     current_directory = Path(current_directory)
     data = []
     for file in current_directory.glob('*'):
-        file_type = "Folder" if file.is_dir() else "File"
+        file_type = get_file_type(file)
         file_size = convert_size(file.stat().st_size) if file.is_file() else ""
         thumbnail_path = get_thumbnail_filename(file)
         data.append((file.name, file_type, file_size, thumbnail_path))
     return data
+
+def get_file_type(path: Path) -> str:
+    if path.is_dir():
+        return 'directory'
+    extension = path.suffix.lower()
+    if extension in ['.png', '.jpg', '.jpeg', '.gif', '.bmp']:
+        return 'image'
+    if extension == '.pdf':
+        return 'pdf'
+    return 'file'
 
 def convert_size(size: int):
     size = float(size)
