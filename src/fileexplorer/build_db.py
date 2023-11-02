@@ -1,12 +1,13 @@
 import hashlib
 import io
 from pathlib import Path
+import time
 
 import fitz
 from PIL import Image
 
 from fileexplorer.config import config
-from fileexplorer.files_db import create_tables, insert_thumbnail
+from fileexplorer.files_db import create_tables, insert_thumbnail, thumbnail_exists_for_file
 
 THUMBNAIL_SIZE = (100, 100)
 
@@ -15,6 +16,8 @@ def build_db(rebuild: bool=False):
     config.resources_dir.mkdir(parents=True, exist_ok=True)
     for file_path in config.rootdir.rglob('*'):
         if not file_path.is_file():
+            continue
+        if thumbnail_exists_for_file(file_path):
             continue
         extension = file_path.suffix.lower()
         if extension not in config.supported_extensions:
@@ -26,6 +29,8 @@ def build_db(rebuild: bool=False):
         else:
             thumbnail_filename = None
         insert_thumbnail(file_path, thumbnail_filename)
+        print(file_path)
+        time.sleep(4)
 
 def get_image_thumbnail(file: Path) -> str|None:
     try:

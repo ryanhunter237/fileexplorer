@@ -21,8 +21,8 @@ def get_file_data(current_directory: str|Path):
     for file in current_directory.glob('*'):
         file_type = get_file_type(file)
         file_size = convert_size(file.stat().st_size) if file.is_file() else ""
-        thumbnail_path = get_thumbnail_filename(file)
-        data.append((file.name, file_type, file_size, thumbnail_path))
+        thumbnail_filename = get_thumbnail_filename(file)
+        data.append((file.name, file_type, file_size, thumbnail_filename))
     return data
 
 def get_file_type(path: Path) -> str:
