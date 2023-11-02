@@ -1,7 +1,6 @@
 import hashlib
 import io
 from pathlib import Path
-import time
 
 import fitz
 from PIL import Image
@@ -29,8 +28,6 @@ def build_db(rebuild: bool=False):
         else:
             thumbnail_filename = None
         insert_thumbnail(file_path, thumbnail_filename)
-        print(file_path)
-        time.sleep(4)
 
 def get_image_thumbnail(file: Path) -> str|None:
     try:

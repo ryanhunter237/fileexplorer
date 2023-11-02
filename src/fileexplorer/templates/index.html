@@ -41,9 +41,9 @@
                                 <td>{{ item[2] }}</td>
                                 <td>
                                     {% if item[3] == 'error' %}
-                                    <img src="{{ url_for('static', filename='error.png') }}" alt="Thumbnail Error">
+                                    <img src="{{ url_for('static', filename='error.png') }}" alt="Thumbnail Error" class="img-thumbnail">
                                     {% elif item[3] == 'processing' %}
-                                    <img src="{{ url_for('static', filename='loading.gif') }}" alt="Thumbnail Processing">
+                                    <img src="{{ url_for('static', filename='loading.png') }}" alt="Thumbnail Processing" class="img-thumbnail">
                                     {% elif item[3] %}
                                     <img src="{{ url_for('explorer.serve_thumbnail', filename=item[3]) }}" alt="Thumbnail" class="img-thumbnail img-preview">
                                     {% endif %}

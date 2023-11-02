@@ -40,7 +40,7 @@ def get_thumbnail_filename(file_path: str|Path) -> str|None:
         'error' if there was an error computing the thumbnail
     """
     # check to see if thumbnail processing was even attempted
-    if file_path.suffix not in config.supported_extensions:
+    if file_path.suffix.lower() not in config.supported_extensions:
         return None
     conn = get_db_connection()
     result = conn.execute(
