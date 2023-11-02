@@ -11,10 +11,12 @@ def get_db_connection() -> sqlite3.Connection:
     conn.row_factory = sqlite3.Row
     return conn
 
-def create_tables():
+def create_tables(drop_existing: bool=False):
     """Create the tables for the file explorer database if they don't already exist"""
     conn = get_db_connection()
-    conn.execute("CREATE TABLE IF NOT EXISTS thumbnails (file_path STR, thumbnail_file STR)")
+    if drop_existing:
+        conn.execute('DROP TABLE IF EXISTS thumbnails')
+    conn.execute('CREATE TABLE IF NOT EXISTS thumbnails (file_path STR, thumbnail_file STR)')
     conn.close()
 
 def normalize_path(path: str|Path) -> str:

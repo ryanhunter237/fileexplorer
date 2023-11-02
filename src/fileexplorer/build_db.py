@@ -10,8 +10,8 @@ from fileexplorer.files_db import create_tables, insert_thumbnail
 
 THUMBNAIL_SIZE = (100, 100)
 
-def build_db():
-    create_tables()
+def build_db(rebuild: bool=False):
+    create_tables(drop_existing=rebuild)
     config.resources_dir.mkdir(parents=True, exist_ok=True)
     for file_path in config.rootdir.rglob('*'):
         if not file_path.is_file():

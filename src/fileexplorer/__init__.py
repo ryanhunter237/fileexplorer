@@ -11,7 +11,8 @@ def create_app():
     app.register_blueprint(bp)    
     app.jinja_env.filters['endswith'] = ends_with_filter
     # build database in a separate process
-    worker = multiprocessing.Process(target=build_db)
+    rebuild = True
+    worker = multiprocessing.Process(target=build_db, args=(rebuild,))
     worker.start()
     # this atexit is probably not necessary
     atexit.register(worker.terminate)
