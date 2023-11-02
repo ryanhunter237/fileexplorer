@@ -9,8 +9,9 @@ from fileexplorer.config import config
 from fileexplorer.files_db import create_tables, insert_thumbnail
 
 THUMBNAIL_SIZE = (100, 100)
-    
-def populate_db():
+
+def build_db():
+    create_tables()
     config.resources_dir.mkdir(parents=True, exist_ok=True)
     for file_path in config.rootdir.rglob('*'):
         if not file_path.is_file():
@@ -55,7 +56,3 @@ def get_pdf_thumbnail(file: Path) -> str|None:
         return None
     thumbnail_filename = write_thumbnail(image)
     return thumbnail_filename
-
-if __name__ == '__main__':
-    create_tables()
-    populate_db()
