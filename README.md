@@ -8,4 +8,4 @@ In the root directory with the `pyproject.toml` file, run `python -m pip install
 
 ## Running
 
-Once fileexplorer is installed, run `python -m flask --app fileexplorer run` to launch the Flask server.
+Once fileexplorer is installed, run `python -m flask run` to launch the Flask server.
