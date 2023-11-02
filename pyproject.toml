@@ -14,4 +14,5 @@ dependencies = [
     "flask",
     "pillow",
     "pymupdf",
+    "python-dotenv",
 ]
