@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>File Explorer</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 </head>
 <body>
     <div id="data" data-image-url="{{ url_for('explorer.serve_image', file_path='', _external=True) }}" data-current-directory="{{ current_directory | replace('\\', '/') }}"></div>
@@ -30,20 +30,20 @@
                                 <td>
                                     {% if item[1] == 'directory' %}
                                     <a href="{{ url_for('explorer.change_directory', current_directory=current_directory, new_path=item[0]) }}">
-                                        <img src="{{ url_for('static', filename='folder.png') }}" class="icon" alt="Folder Icon">
+                                        <img src="{{ url_for('static', filename='images/folder.png') }}" class="icon" alt="Folder Icon">
                                         {{ item[0] }}
                                     </a>
                                     {% else %}
-                                    <img src="{{ url_for('static', filename='file.png') }}" class="icon" alt="File Icon">
+                                    <img src="{{ url_for('static', filename='images/file.png') }}" class="icon" alt="File Icon">
                                     {{ item[0] }}
                                     {% endif %}
                                 </td>
                                 <td>{{ item[2] }}</td>
                                 <td>
                                     {% if item[3] == 'error' %}
-                                    <img src="{{ url_for('static', filename='error.png') }}" alt="Thumbnail Error" class="img-thumbnail">
+                                    <img src="{{ url_for('static', filename='images/error.png') }}" alt="Thumbnail Error" class="img-thumbnail">
                                     {% elif item[3] == 'processing' %}
-                                    <img src="{{ url_for('static', filename='loading.png') }}" alt="Thumbnail Processing" class="img-thumbnail">
+                                    <img src="{{ url_for('static', filename='images/loading.png') }}" alt="Thumbnail Processing" class="img-thumbnail">
                                     {% elif item[3] %}
                                     <img src="{{ url_for('explorer.serve_thumbnail', filename=item[3]) }}" alt="Thumbnail" class="img-thumbnail img-preview">
                                     {% endif %}
