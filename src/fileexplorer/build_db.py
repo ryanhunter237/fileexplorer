@@ -7,6 +7,7 @@ from PIL import Image
 
 from fileexplorer.config import config
 from fileexplorer.files_db import create_tables, insert_thumbnail, thumbnail_exists_for_file
+from fileexplorer.stl_vis import get_stl_image
 
 THUMBNAIL_SIZE = (100, 100)
 
@@ -25,6 +26,8 @@ def build_db(rebuild: bool=False):
             thumbnail_filename = get_image_thumbnail(file_path)
         elif extension == '.pdf':
             thumbnail_filename = get_pdf_thumbnail(file_path)
+        elif extension == '.stl':
+            thumbnail_filename = get_stl_thumbnail(file_path)
         else:
             thumbnail_filename = None
         insert_thumbnail(file_path, thumbnail_filename)
@@ -54,6 +57,14 @@ def get_pdf_thumbnail(file: Path) -> str|None:
         first_page = pdf.load_page(0)
         pix = first_page.get_pixmap()
         image = Image.frombytes('RGB', [pix.width, pix.height], pix.samples)
+    except Exception:
+        return None
+    thumbnail_filename = write_thumbnail(image)
+    return thumbnail_filename
+
+def get_stl_thumbnail(file: Path) -> str|None:
+    try:
+        image = get_stl_image(file)
     except Exception:
         return None
     thumbnail_filename = write_thumbnail(image)

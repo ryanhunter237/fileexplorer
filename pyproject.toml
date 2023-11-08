@@ -6,12 +6,15 @@ build-backend = "setuptools.build_meta"
 name = "fileexplorer"
 version = "0.0.1"
 authors = [
-  { name="Ryan Hunter", email="ryanhunter237@gmail.com" },
+    { name="Ryan Hunter", email="ryanhunter237@gmail.com" },
 ]
 description = "A file explorer Flask app"
 readme = "README.md"
 dependencies = [
     "flask",
+    "matplotlib",
+    "numpy",
+    "numpy-stl",
     "pillow",
     "pymupdf",
     "python-dotenv",

@@ -13,7 +13,7 @@ class AppConfig:
         self.rootdir = Path(rootdir)
         self.db_path = Path(db_path)
         self.resources_dir = Path(resources_dir)
-        self.supported_extensions = ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.pdf']
+        self.supported_extensions = ['.png', '.jpg', '.jpeg', '.gif', '.bmp', '.pdf', '.stl']
     
     @classmethod
     def from_json(cls, json_path: str|Path):
