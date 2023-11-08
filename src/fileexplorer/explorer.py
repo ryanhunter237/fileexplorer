@@ -33,6 +33,8 @@ def get_file_type(path: Path) -> str:
         return 'image'
     if extension == '.pdf':
         return 'pdf'
+    if extension == '.stl':
+        return 'stl'
     return 'file'
 
 def convert_size(size: int):

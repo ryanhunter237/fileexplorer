@@ -1,3 +1,7 @@
+import * as THREE from 'three';
+import { STLLoader } from 'three/addons/loaders/STLLoader';
+import { TrackballControls } from 'three/addons/controls/TrackballControls';
+
 document.addEventListener('DOMContentLoaded', function () {
     const thumbnails = document.querySelectorAll('.img-preview');
     const visPanel = document.getElementById('vis-panel');
@@ -29,6 +33,50 @@ document.addEventListener('DOMContentLoaded', function () {
         updateVisDisplay(newEmbed);
     }
 
+    function displaySTL(fullImagePath) {
+        // Setup scene, camera, and renderer.  Add renderer to the viewer-container
+        var container = document.createElement('div');
+        container.id = 'vis-display';
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
+
+        // Setup TrackballControls for the camera and renderer
+        const controls = new TrackballControls(camera, renderer.domElement);
+        controls.rotateSpeed = 4.0;
+
+        const loader = new STLLoader();
+        loader.load(
+            fullImagePath,
+            function (geometry) {
+                const material = new THREE.MeshNormalMaterial();
+                const mesh = new THREE.Mesh(geometry, material);
+                mesh.scale.set(0.05, 0.05, 0.05);
+                scene.add(mesh);
+            },
+            (xhr) => {
+                console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+            },
+            (error) => {
+                console.log(error)
+            }
+        );
+
+        camera.position.set(0,-5,2)
+
+        const animate = function () {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        };
+
+        animate();
+
+        updateVisDisplay(container);
+    }
+
     function getFullImagePath(element) {
         const filename = element.getAttribute('data-filename');
         const fullImagePath = currentDirectory + '/' + filename;
@@ -44,6 +92,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 displayImage(fullImagePath);
             } else if (filetype === 'pdf') {
                 displayPDF(fullImagePath);
+            } else if (filetype === 'stl') {
+                displaySTL(fullImagePath);
             }
         });
     });
