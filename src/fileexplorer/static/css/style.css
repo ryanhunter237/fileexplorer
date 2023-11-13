@@ -39,25 +39,24 @@ table tr td:nth-child(2) {
 }
 
 .table-container {
-    max-height: calc(100vh - 100px); /* Set the maximum height for the table container */
+    max-height: calc(100vh - 75px); /* Set the maximum height for the table container */
     overflow-y: auto; /* Enable vertical scrolling */
     border: 1px solid #ccc;
 }
 
 table {
-    background-color: #fff;
     position: relative; /* Necessary for fixed headers */
 }
 
 th {
     position: sticky; /* Sticky headers */
     top: 0;
-    background-color: #f7f7f7; /* Header background color */
     z-index: 2; /* Place header above table cells */
+    /* background-color: #f7f7f7; */
 }
 
 td {
-    padding: 8px; /* Add padding for table cells */
+    /* padding: 8px; */
     vertical-align: middle;
 }
 
