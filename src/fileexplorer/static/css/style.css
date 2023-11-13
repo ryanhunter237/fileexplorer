@@ -39,3 +39,9 @@ td {
     padding: 8px; /* Add padding for table cells */
     vertical-align: middle;
 }
+
+#vis-panel {
+    width: 100%; /* or the desired width */
+    height: 100%; /* or the desired height */
+    position: relative; /* This is required to properly position the child absolutely */
+}  
