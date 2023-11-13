@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', function () {
         newEmbed.id = 'vis-display';
         newEmbed.src = `${imageBaseUrl}/${fullImagePath}#toolbar=0&navpanes=0&scrollbar=0`;
         newEmbed.type = 'application/pdf';
-        newEmbed.width = '100%';
-        newEmbed.height = '100%';
+        newEmbed.style.width = '100%';
+        newEmbed.style.height = '100%';
         updateVisDisplay(newEmbed);
     }
 
