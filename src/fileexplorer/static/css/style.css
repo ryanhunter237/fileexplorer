@@ -14,14 +14,24 @@ html, body {
     flex-grow: 1;
 }
 
+/* Make anchors only show underline on hover */
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
 .icon {
-    width: 20px; /* Adjust the width and height as needed */
+    width: 20px;
     height: 20px;
     margin-right: 5px;
 }
 
+ /* Add pointer cursor to image thumbnails */
 .img-preview {
-    cursor: pointer; /* Add pointer cursor to image thumbnails */
+    cursor: pointer;
 }
 
 table tr td:nth-child(2) {
