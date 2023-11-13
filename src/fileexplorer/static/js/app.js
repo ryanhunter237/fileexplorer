@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
         newEmbed.src = `${imageBaseUrl}/${fullImagePath}#toolbar=0&navpanes=0&scrollbar=0`;
         newEmbed.type = 'application/pdf';
         newEmbed.width = '100%';
-        newEmbed.height = '500';
+        newEmbed.height = '100%';
         updateVisDisplay(newEmbed);
     }
 
