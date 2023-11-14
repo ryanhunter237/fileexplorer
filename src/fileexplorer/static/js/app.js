@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { TrackballControls } from 'three/addons/controls/TrackballControls';
+import { STLLoader } from 'three/addons/loaders/STLLoader';
 
 document.addEventListener('DOMContentLoaded', function () {
     const thumbnails = document.querySelectorAll('.img-preview');
@@ -55,10 +56,22 @@ document.addEventListener('DOMContentLoaded', function () {
         const controls = new TrackballControls(camera, renderer.domElement);
         // controls.rotateSpeed = 4.0;
 
-        const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-        const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-        const cube = new THREE.Mesh( geometry, material );
-        scene.add( cube );
+        const loader = new STLLoader();
+        loader.load(
+            `${imageBaseUrl}/${fullImagePath}`,
+            function (geometry) {
+                const material = new THREE.MeshNormalMaterial();
+                const mesh = new THREE.Mesh(geometry, material);
+                mesh.scale.set(0.05, 0.05, 0.05);
+                scene.add(mesh);
+            },
+            (xhr) => {
+                console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+            },
+            (error) => {
+                console.log(error)
+            }
+        );
 
         camera.position.z = 5;
 

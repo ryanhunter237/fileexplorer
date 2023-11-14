@@ -52,7 +52,6 @@ th {
     position: sticky; /* Sticky headers */
     top: 0;
     z-index: 2; /* Place header above table cells */
-    /* background-color: #f7f7f7; */
 }
 
 td {
