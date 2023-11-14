@@ -73,7 +73,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         );
 
-        camera.position.z = 5;
+        camera.position.set(5,-5,3)
+        camera.up.set(0,0,1);
+        camera.lookAt(0,0,0);
 
         function animate() {
             requestAnimationFrame( animate );
@@ -97,7 +99,9 @@ document.addEventListener('DOMContentLoaded', function () {
         resetButton.id = 'reset-button';
         resetButton.addEventListener('click', () => {
             controls.reset();
-            camera.position.z = 5;
+            camera.position.set(5,-5,3)
+            camera.up.set(0,0,1);
+            camera.lookAt(0,0,0);
             renderer.render(scene, camera);
         });
         container.appendChild( resetButton );
