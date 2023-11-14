@@ -35,9 +35,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var container = document.createElement('div');
         container.style.width = '100%';
         container.style.height = '100%';
+        // container needs relative position so its canvas child can be positioned absolutely
         container.style.position = 'relative';
-        container.style.overflow = 'hidden';
-        // need to replace old vis-display with container so clientWidth and clientHeight are not null
+        // need to replace old vis-display so clientWidth and clientHeight are set
         updateVisDisplay(container);
 
         const width = container.clientWidth;
@@ -46,6 +46,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const camera = new THREE.PerspectiveCamera( 75, width / height, 0.1, 1000 );
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize( width, height );
+        // The canvas (renderer.domElement) needs to have absolute position
+        // to not interfere with the flexbox resizing.
         renderer.domElement.style.position = 'absolute';
         container.appendChild( renderer.domElement );
 
@@ -76,6 +78,16 @@ document.addEventListener('DOMContentLoaded', function () {
             camera.updateProjectionMatrix();
             controls.handleResize();
         });
+
+        var resetButton = document.createElement('button');
+        resetButton.textContent = 'Reset View';
+        resetButton.id = 'reset-button';
+        resetButton.addEventListener('click', () => {
+            controls.reset();
+            camera.position.z = 5;
+            renderer.render(scene, camera);
+        });
+        container.appendChild( resetButton );
     }
 
     function getFullImagePath(element) {
