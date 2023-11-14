@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const currentDirectory = imageData.getAttribute('data-current-directory');
 
     function updateVisDisplay(newElement) {
+        newElement.id = 'vis-display'
         const visDisplay = document.getElementById('vis-display');
         visDisplay.replaceWith(newElement);
         visPanel.classList.remove('d-none');
@@ -16,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function displayImage(fullImagePath) {
         var newImg = document.createElement('img');
-        newImg.id = 'vis-display';
         newImg.src = `${imageBaseUrl}/${fullImagePath}`;
         newImg.className = 'img-fluid';
         updateVisDisplay(newImg);
@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function displayPDF(fullImagePath) {
         var newEmbed = document.createElement('embed');
-        newEmbed.id = 'vis-display';
         newEmbed.src = `${imageBaseUrl}/${fullImagePath}#toolbar=0&navpanes=0&scrollbar=0`;
         newEmbed.type = 'application/pdf';
         newEmbed.style.width = '100%';
@@ -34,10 +33,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function displaySTL(fullImagePath) {
         var container = document.createElement('div');
-        container.id = 'vis-display';
         container.style.width = '100%';
         container.style.height = '100%';
         container.style.position = 'relative';
+        container.style.overflow = 'hidden';
         // need to replace old vis-display with container so clientWidth and clientHeight are not null
         updateVisDisplay(container);
 
@@ -47,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const camera = new THREE.PerspectiveCamera( 75, width / height, 0.1, 1000 );
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize( width, height );
+        renderer.domElement.style.position = 'absolute';
         container.appendChild( renderer.domElement );
 
         // Setup TrackballControls for the camera and renderer
