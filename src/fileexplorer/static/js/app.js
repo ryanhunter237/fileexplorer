@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const thumbnails = document.querySelectorAll('.img-preview');
     const visPanel = document.getElementById('vis-panel');
     const imageData = document.getElementById('data');
-    const imageBaseUrl = imageData.getAttribute('data-image-url');
+    const fileServingUrl = imageData.getAttribute('file-serving-url');
     const currentDirectory = imageData.getAttribute('data-current-directory');
 
     function updateVisDisplay(newElement) {
@@ -16,23 +16,23 @@ document.addEventListener('DOMContentLoaded', function () {
         visPanel.classList.remove('d-none');
     }
 
-    function displayImage(fullImagePath) {
+    function displayImage(imageUrl) {
         var newImg = document.createElement('img');
-        newImg.src = `${imageBaseUrl}/${fullImagePath}`;
+        newImg.src = imageUrl;
         newImg.className = 'img-fluid';
         updateVisDisplay(newImg);
     }
 
-    function displayPDF(fullImagePath) {
+    function displayPDF(pdfUrl) {
         var newEmbed = document.createElement('embed');
-        newEmbed.src = `${imageBaseUrl}/${fullImagePath}#toolbar=0&navpanes=0&scrollbar=0`;
+        newEmbed.src = `${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`;
         newEmbed.type = 'application/pdf';
         newEmbed.style.width = '100%';
         newEmbed.style.height = '100%';
         updateVisDisplay(newEmbed);
     }
 
-    function displaySTL(fullImagePath) {
+    function displaySTL(stlUrl) {
         var container = document.createElement('div');
         container.style.width = '100%';
         container.style.height = '100%';
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const loader = new STLLoader();
         loader.load(
-            `${imageBaseUrl}/${fullImagePath}`,
+            stlUrl,
             function (geometry) {
                 const material = new THREE.MeshNormalMaterial();
                 const mesh = new THREE.Mesh(geometry, material);
@@ -107,23 +107,24 @@ document.addEventListener('DOMContentLoaded', function () {
         container.appendChild( resetButton );
     }
 
-    function getFullImagePath(element) {
+    function getFileUrl(element) {
         const filename = element.getAttribute('data-filename');
-        const fullImagePath = currentDirectory + '/' + filename;
-        return fullImagePath;
+        const fileUrl = `${fileServingUrl}/${currentDirectory}/${filename}`
+        return fileUrl;
     }
 
     thumbnails.forEach(img => {
         img.addEventListener('click', function () {
-            const filetype = this.parentElement.parentElement.getAttribute('data-filetype');
-            const fullImagePath = getFullImagePath(this.parentElement.parentElement);
+            const rowElement = this.parentElement.parentElement;
+            const filetype = rowElement.getAttribute('data-filetype');
+            const fileUrl = getFileUrl(rowElement);
 
             if (filetype === 'image') {
-                displayImage(fullImagePath);
+                displayImage(fileUrl);
             } else if (filetype === 'pdf') {
-                displayPDF(fullImagePath);
+                displayPDF(fileUrl);
             } else if (filetype === 'stl') {
-                displaySTL(fullImagePath);
+                displaySTL(fileUrl);
             }
         });
     });
