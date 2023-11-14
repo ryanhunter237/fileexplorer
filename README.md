@@ -1,10 +1,26 @@
 # fileexplorer
 
-A web application to explore files on your local filesystem. My goal is to create a custom multimedia file explorer.  My first step is to add thumbnails and pop-ups for image files.  Then I plan on incorporating the same for some 3D data formats.
+A multimedia file explorer with thumbnails and file viewers for images, pdfs, and 3D mesh STL files.
 
 ## Installation
 
-In the root directory with the `pyproject.toml` file, run `python -m pip install .`
+In order to build this project, you will need both python and node.js.
+
+After cloning the repository, install the fileexplorer python package in a virtual environment.
+
+```console
+>> cd fileexplorer
+>> python -m venv .venv\fileexplorer_env
+>> .venv\fileexplorer_env\Scripts\activate
+>> python -m pip install .
+```
+
+Then install the npm dependencies in the static directory.
+
+```console
+>> cd src\fileexplorer\static
+>> npm install
+```
 
 ## Running
 
@@ -17,10 +33,14 @@ Create a json file for your application with the following configs:
     "resources_dir": "/path/to/resources"
 }
 ```
-* `rootdir` is the root directory that fileexplorer will display
-* `db_path` is the fileexplorer sqlite database file
-* `resources_dir` is a directory where files created by fileexplorer are stored
+* `rootdir`: the root directory that fileexplorer will display
+* `db_path`: a sqlite file to be created fileexplorer
+* `resources_dir`: a directory where files created by fileexplorer are stored
 
 Set the environment variable `FILEEXPLORER_CONFIG` to be the path to this config file.  Alternatively, create a `.env` file in the root directory of the fileexplorer project with the line `FILEEXPLORER_CONFIG=/pth/to/config.json`.
 
-Finally, run `python -m flask run` to launch the Flask server.
+As long as the fileexplorer_env virtual environment is activated you can launch the server from any directory by running
+
+```console
+python -m flask run
+```
