@@ -5,29 +5,50 @@ import { STLLoader } from 'three/addons/loaders/STLLoader';
 import { updateVisDisplay } from './visDisplay.js'
 
 export function displaySTL(stlUrl) {
+    const container = setupContainer();
+    const { scene, camera, renderer } = initializeScene(container);
+    const controls = setupControls(camera, renderer);
+    loadAndAddSTL(stlUrl, scene);
+    setupResizeEvent(container, renderer, camera, controls);
+    const resetButton = createResetButton(scene, camera, renderer, controls);
+    container.appendChild(resetButton);
+    animate(renderer, scene, camera, controls);
+}
+
+function setupContainer() {
     var container = document.createElement('div');
     container.style.width = '100%';
     container.style.height = '100%';
-    // container needs relative position so its canvas child can be positioned absolutely
     container.style.position = 'relative';
-    // need to replace old vis-display so clientWidth and clientHeight are set
     updateVisDisplay(container);
+    return container;
+}
 
+function initializeScene(container) {
     const width = container.clientWidth;
     const height = container.clientHeight;
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera( 75, width / height, 0.1, 1000 );
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer();
-    renderer.setSize( width, height );
-    // The canvas (renderer.domElement) needs to have absolute position
-    // to not interfere with the flexbox resizing.
+    renderer.setSize(width, height);
     renderer.domElement.style.position = 'absolute';
-    container.appendChild( renderer.domElement );
+    container.appendChild(renderer.domElement);
+    setCameraPosition(camera);
+    return { scene, camera, renderer };
+}
 
-    // Setup TrackballControls for the camera and renderer
+function setCameraPosition(camera) {
+    camera.position.set(5, -5, 3);
+    camera.up.set(0, 0, 1);
+    camera.lookAt(0, 0, 0);
+}
+
+function setupControls(camera, renderer) {
     const controls = new TrackballControls(camera, renderer.domElement);
-    // controls.rotateSpeed = 4.0;
+    return controls;
+}
 
+function loadAndAddSTL(stlUrl, scene) {
     const loader = new STLLoader();
     loader.load(
         stlUrl,
@@ -38,26 +59,16 @@ export function displaySTL(stlUrl) {
             scene.add(mesh);
         },
         (xhr) => {
-            console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
+            console.log((xhr.loaded / xhr.total) * 100 + '% loaded');
         },
         (error) => {
-            console.log(error)
+            console.log(error);
         }
     );
+}
 
-    camera.position.set(5,-5,3)
-    camera.up.set(0,0,1);
-    camera.lookAt(0,0,0);
-
-    function animate() {
-        requestAnimationFrame( animate );
-        controls.update();
-        renderer.render( scene, camera );
-    }
-
-    animate();
-
-    window.addEventListener('resize', function() {
+function setupResizeEvent(container, renderer, camera, controls) {
+    window.addEventListener('resize', function () {
         const width = container.clientWidth;
         const height = container.clientHeight;
         renderer.setSize(width, height);
@@ -65,16 +76,25 @@ export function displaySTL(stlUrl) {
         camera.updateProjectionMatrix();
         controls.handleResize();
     });
+}
 
+function createResetButton(scene, camera, renderer, controls) {
     var resetButton = document.createElement('button');
     resetButton.textContent = 'Reset View';
     resetButton.id = 'reset-button';
     resetButton.addEventListener('click', () => {
         controls.reset();
-        camera.position.set(5,-5,3)
-        camera.up.set(0,0,1);
-        camera.lookAt(0,0,0);
+        setCameraPosition(camera);
         renderer.render(scene, camera);
     });
-    container.appendChild( resetButton );
+    return resetButton;
+}
+
+function animate(renderer, scene, camera, controls) {
+    function animateLoop() {
+        requestAnimationFrame(animateLoop);
+        controls.update();
+        renderer.render(scene, camera);
+    }
+    animateLoop();
 }
