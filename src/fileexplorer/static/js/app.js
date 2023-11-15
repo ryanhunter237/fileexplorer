@@ -3,15 +3,11 @@ import { TrackballControls } from 'three/addons/controls/TrackballControls';
 import { STLLoader } from 'three/addons/loaders/STLLoader';
 
 document.addEventListener('DOMContentLoaded', function () {
-    const thumbnails = document.querySelectorAll('.img-preview');
-    const visPanel = document.getElementById('vis-panel');
-    const currentDirData = document.getElementById('current-dir-data');
-    const fileServingUrl = currentDirData.getAttribute('file-serving-url');
-
     function updateVisDisplay(newElement) {
         newElement.id = 'vis-display'
         const visDisplay = document.getElementById('vis-display');
         visDisplay.replaceWith(newElement);
+        const visPanel = document.getElementById('vis-panel');
         visPanel.classList.remove('d-none');
     }
 
@@ -107,10 +103,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function getFileUrl(element) {
+        const currentDirData = document.getElementById('current-dir-data');
+        const fileServingUrl = currentDirData.getAttribute('file-serving-url');
         const filename = element.getAttribute('data-filename');
         return fileServingUrl + '/' + filename
     }
 
+    const thumbnails = document.querySelectorAll('.img-preview');
     thumbnails.forEach(img => {
         img.addEventListener('click', function () {
             const rowElement = this.parentElement.parentElement;
