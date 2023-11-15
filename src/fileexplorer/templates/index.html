@@ -21,7 +21,7 @@
     </script>
 </head>
 <body>
-    <div id="data" file-serving-url="{{ url_for('explorer.serve_file', file_path='', _external=True) }}" data-current-directory="{{ current_directory | replace('\\', '/') }}"></div>
+    <div id="current-dir-data" file-serving-url="{{ url_for('explorer.serve_file', file_path=current_directory, _external=True) }}"></div>
     <div class="container-fluid pt-3 pb-3">
         <!-- Breadcrumb header row -->
         <div class="row">

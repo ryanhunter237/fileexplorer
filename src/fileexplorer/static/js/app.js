@@ -5,9 +5,8 @@ import { STLLoader } from 'three/addons/loaders/STLLoader';
 document.addEventListener('DOMContentLoaded', function () {
     const thumbnails = document.querySelectorAll('.img-preview');
     const visPanel = document.getElementById('vis-panel');
-    const imageData = document.getElementById('data');
-    const fileServingUrl = imageData.getAttribute('file-serving-url');
-    const currentDirectory = imageData.getAttribute('data-current-directory');
+    const currentDirData = document.getElementById('current-dir-data');
+    const fileServingUrl = currentDirData.getAttribute('file-serving-url');
 
     function updateVisDisplay(newElement) {
         newElement.id = 'vis-display'
@@ -109,8 +108,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function getFileUrl(element) {
         const filename = element.getAttribute('data-filename');
-        const fileUrl = `${fileServingUrl}/${currentDirectory}/${filename}`
-        return fileUrl;
+        return fileServingUrl + '/' + filename
     }
 
     thumbnails.forEach(img => {

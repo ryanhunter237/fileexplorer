@@ -82,6 +82,6 @@ def serve_thumbnail():
     filename = request.args.get('filename')
     return send_from_directory(config.resources_dir, filename)
 
-@bp.route('/image/<path:file_path>')
+@bp.route('/file/<path:file_path>')
 def serve_file(file_path):
     return send_file(file_path)
